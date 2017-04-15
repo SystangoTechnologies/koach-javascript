@@ -1,0 +1,67 @@
+{
+  "name": "koach",
+  "version": "1.0.0",
+  "description": "Production ready Koa2 boilerplate for APIs",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "./node_modules/.bin/nodemon index.js",
+    "test": "NODE_ENV=test ./node_modules/.bin/mocha --compilers js:babel-register --require babel-polyfill",
+    "lint": "eslint src/**/*.js",
+    "docs": "./node_modules/.bin/apidoc -i src/ -o docs"
+  },
+  "keywords": [
+    "koa2-api-boilerplate",
+    "api",
+    "koa",
+    "koa2",
+    "boilerplate",
+    "es6",
+    "mongoose",
+    "passportjs",
+    "apidoc"
+  ],
+  "author": "Arpit Khandelwal <arpit@systango.com>",
+  "license": "MIT",
+  "apidoc": {
+    "title": "koach",
+    "url": "localhost:3000"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SystangoTechnologies/Koach.git"
+  },
+  "dependencies": {
+    "apidoc": "^0.17.5",
+    "babel-core": "^6.5.1",
+    "babel-polyfill": "^6.5.0",
+    "babel-preset-es2015-node5": "^1.2.0",
+    "babel-preset-stage-0": "^6.5.0",
+    "bcrypt": "^1.0.2",
+    "glob": "^7.0.0",
+    "jsonwebtoken": "^7.1.9",
+    "koa": "^2.2.0",
+    "koa-bodyparser": "^4.2.0",
+    "koa-convert": "^1.2.0",
+    "koa-generic-session": "^1.10.1",
+    "koa-logger": "^2.0.0",
+    "koa-mount": "^3.0.0",
+    "koa-passport": "^3.0.0",
+    "koa-router": "^7.0.1",
+    "koa-static": "^3.0.0",
+    "mongoose": "^4.4.3",
+    "passport-local": "^1.0.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "^7.2.2",
+    "babel-register": "^6.5.1",
+    "chai": "^3.5.0",
+    "eslint": "^3.4.0",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "mocha": "^3.0.2",
+    "nodemon": "^1.8.1",
+    "supertest": "^3.0.0"
+  }
+}
