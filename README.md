@@ -11,10 +11,11 @@ This project covers basic necessities of most APIs.
 
 ## Requirements
 * node > v7.8.0
+* MongoDB
 
 ## Installation
 ```bash
-git clone 
+git clone https://github.com/SystangoTechnologies/Koach.git
 ```
 
 ## Features
