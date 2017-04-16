@@ -24,6 +24,8 @@ git clone https://github.com/SystangoTechnologies/Koach.git
 * [koa-bodyparser](https://github.com/koajs/bodyparser)
 * [koa-generic-session](https://github.com/koajs/generic-session)
 * [koa-logger](https://github.com/koajs/logger)
+* [koa-helmet](https://github.com/venables/koa-helmet)
+* [koa-convert](https://github.com/koajs/convert)
 * [MongoDB](http://mongodb.org/)
 * [Mongoose](http://mongoosejs.com/)
 * [Passport](http://passportjs.org/)

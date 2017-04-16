@@ -7,6 +7,7 @@ import session from 'koa-generic-session'
 import passport from 'koa-passport'
 import mount from 'koa-mount'
 import serve from 'koa-static'
+import helmet from 'koa-helmet'
 import config from '../config'
 import { errorMiddleware } from '../src/middleware'
 
@@ -27,6 +28,7 @@ app.use = x => _use.call(app, convert(x))
 mongoose.Promise = global.Promise
 mongoose.connect(config.database)
 
+app.use(helmet())
 app.use(logger())
 app.use(bodyParser())
 app.use(session())
