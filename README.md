@@ -1,3 +1,5 @@
+![KOACH](https://github.com/SystangoTechnologies/Koach/blob/master/static/koach.png)
+
 ## KOACH
 Production ready boilerplate for building APIs with [koa2](https://github.com/koajs/koa/) and mongodb.
 
