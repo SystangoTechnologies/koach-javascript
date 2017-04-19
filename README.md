@@ -1,13 +1,14 @@
 ![KOACH](https://github.com/SystangoTechnologies/Koach/blob/master/static/koach.png)
 
 ## KOACH
-Production ready boilerplate for building APIs with [koa2](https://github.com/koajs/koa/) and mongodb.
+Production ready boilerplate for building APIs with [koa2](https://github.com/koajs/koa/)using mongodb as the database and http/2 as the communication protocol.
 
 ## Description
 This project covers basic necessities of most APIs.
 * Authentication (passport & jwt)
 * Database (mongoose)
 * Testing (mocha)
+* http/2 support for websites and apis
 * Doc generation with apidoc
 * linting using standard
 
@@ -30,6 +31,7 @@ git clone https://github.com/SystangoTechnologies/Koach.git
 * [koa-convert](https://github.com/koajs/convert)
 * [MongoDB](http://mongodb.org/)
 * [Mongoose](http://mongoosejs.com/)
+* [http/2](https://github.com/molnarg/node-http2)
 * [Passport](http://passportjs.org/)
 * [Nodemon](http://nodemon.io/)
 * [Mocha](https://mochajs.org/)
@@ -41,13 +43,16 @@ git clone https://github.com/SystangoTechnologies/Koach.git
 ```
 ├── bin
 │   └── server.js            # Bootstrapping and entry point
+├── cert
+│   ├── server.cert          # SSL certificate
+│   └── server.key           # SSL certificate key
 ├── config                   # Server configuration settings
 │   ├── env                  # Environment specific config
 │   │   ├── common.js
 │   │   ├── development.js
 │   │   ├── production.js
 │   │   └── test.js
-│   ├── index.js             # Config entrypoint - exports config according to envionrment and commons
+│   ├── index.js             # Config entrypoint
 │   └── passport.js          # Passportjs config of strategies
 ├── src                      # Source code
 │   ├── modules

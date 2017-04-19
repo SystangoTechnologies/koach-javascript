@@ -39,6 +39,7 @@
     "babel-preset-stage-0": "^6.5.0",
     "bcrypt": "^1.0.2",
     "glob": "^7.0.0",
+    "http2": "^3.3.6",
     "jsonwebtoken": "^7.1.9",
     "koa": "^2.2.0",
     "koa-bodyparser": "^4.2.0",

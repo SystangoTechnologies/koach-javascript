@@ -8,11 +8,19 @@ import passport from 'koa-passport'
 import mount from 'koa-mount'
 import serve from 'koa-static'
 import helmet from 'koa-helmet'
+import http2 from 'http2'
+import fs from 'fs'
 import config from '../config'
 import { errorMiddleware } from '../src/middleware'
 
 const app = new Koa()
 app.keys = [config.session]
+
+// replace these with your certificate information
+const options = {  
+  cert:  fs.readFileSync('./cert/localhost.cert'),
+  key: fs.readFileSync('./cert/localhost.key')
+}
 
 // --------------------- start -------------------------
 //Instead of calling convert for all legacy middlewares 
@@ -46,8 +54,15 @@ app.use(passport.session())
 const modules = require('../src/modules')
 modules(app)
 
-app.listen(config.port, () => {
-  console.log(`Server started on ${config.port}`)
+//Using http2 to work with http/2 instead of http/1.x
+http2  
+  .createServer(options, app.callback())
+  .listen(config.port, () => {
+  	console.log(`Server started on ${config.port}`)
 })
+
+//app.listen(config.port, () => {
+  //console.log(`Server started on ${config.port}`)
+//})
 
 export default app
