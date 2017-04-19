@@ -1,7 +1,7 @@
 ![KOACH](https://github.com/SystangoTechnologies/Koach/blob/master/static/koach.png)
 
 ## KOACH
-Production ready boilerplate for building APIs with [koa2](https://github.com/koajs/koa/)using mongodb as the database and http/2 as the communication protocol.
+Production ready boilerplate for building APIs with [koa2](https://github.com/koajs/koa/) using mongodb as the database and http/2 as the communication protocol.
 
 ## Description
 This project covers basic necessities of most APIs.
