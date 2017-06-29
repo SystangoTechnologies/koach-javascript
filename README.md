@@ -83,4 +83,4 @@ Visit `https://localhost:3000/docs/` to view docs
 [Arpit Khandelwal](https://github.com/arpit-systango)
 
 ## License
-MIT
+MIT.
