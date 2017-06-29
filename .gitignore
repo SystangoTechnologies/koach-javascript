@@ -54,3 +54,6 @@ sftp-config.json
 
 #Documentation
 docs
+
+# package-lock.json
+package-lock.json

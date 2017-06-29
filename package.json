@@ -39,6 +39,8 @@
     "babel-preset-stage-0": "^6.5.0",
     "bcrypt": "^1.0.2",
     "glob": "^7.0.0",
+    "gulp": "^3.9.1",
+    "gulp-watch": "^4.3.11",
     "http2": "^3.3.6",
     "jsonwebtoken": "^7.1.9",
     "koa": "^2.2.0",
@@ -52,16 +54,21 @@
     "koa-router": "^7.0.1",
     "koa-static": "^3.0.0",
     "mongoose": "^4.4.3",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "pm2": "^2.5.0",
+    "require-dir": "^0.3.2"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.2",
     "babel-register": "^6.5.1",
     "chai": "^3.5.0",
+    "dotenv": "^4.0.0",
     "eslint": "^3.4.0",
     "eslint-config-standard": "^10.2.1",
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-standard": "^3.0.1",
+    "gulp-nodemon": "^2.2.1",
+    "gulp-yaml": "^1.0.1",
     "mocha": "^3.0.2",
     "nodemon": "^1.8.1",
     "supertest": "^3.0.0"
