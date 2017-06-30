@@ -86,7 +86,7 @@ The environment for the test caes are following-
 * Ramp-up Period: **300 seconds**
 * Loop Count: **100**
 
-| [![Average](https://raw.githubusercontent.com/SystangoTechnologies/Koach/master/static/Average.png)]  | [![Throughput](https://github.com/SystangoTechnologies/Koach/raw/master/static/Throughput.png)] |
+| ![Average](https://raw.githubusercontent.com/SystangoTechnologies/Koach/master/static/Average.png)  | ![Throughput](https://github.com/SystangoTechnologies/Koach/raw/master/static/Throughput.png) |
 |:---:|:---:|
 
 ## Contributors
