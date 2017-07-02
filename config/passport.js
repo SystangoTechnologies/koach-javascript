@@ -32,7 +32,6 @@ passport.use('local', new Strategy({
     } catch (err) {
       done(err)
     }
-
   } catch (err) {
     return done(err)
   }

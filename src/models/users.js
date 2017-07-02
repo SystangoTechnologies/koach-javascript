@@ -23,16 +23,16 @@ User.pre('save', function preSave (next) {
       resolve(salt)
     })
   })
-  .then(salt => {
-    bcrypt.hash(user.password, salt, (err, hash) => {
-      if (err) { throw new Error(err) }
+    .then(salt => {
+      bcrypt.hash(user.password, salt, (err, hash) => {
+        if (err) { throw new Error(err) }
 
-      user.password = hash
+        user.password = hash
 
-      next(null)
+        next(null)
+      })
     })
-  })
-  .catch(err => next(err))
+    .catch(err => next(err))
 })
 
 User.methods.validatePassword = function validatePassword (password) {
