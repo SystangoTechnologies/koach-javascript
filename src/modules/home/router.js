@@ -12,7 +12,7 @@ export default [
   },
   {
     method: 'GET',
-    route: 'login',
+    route: '/login',
     handlers: [
       home.getLogin
     ]
