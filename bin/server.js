@@ -58,7 +58,7 @@ modules(app)
 http2  
   .createServer(options, app.callback())
   .listen(config.port, () => {
-  	console.log(`Server started on ${config.port}`)
+    console.log(`Server started on ${config.port}`)
 })
 
 //app.listen(config.port, () => {

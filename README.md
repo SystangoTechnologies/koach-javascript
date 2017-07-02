@@ -42,6 +42,7 @@ git clone https://github.com/SystangoTechnologies/Koach.git
 * [apidoc](http://apidocjs.com/)
 * [Babel](https://github.com/babel/babel)
 * [ESLint](http://eslint.org/)
+* [Gulp](https://github.com/gulpjs/gulp/)
 
 ## Structure
 ```
