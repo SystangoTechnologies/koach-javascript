@@ -72,8 +72,8 @@ git clone https://github.com/SystangoTechnologies/Koach.git
 ```
 
 ## Usage
-* `npm start` Start server on live mode
-* `npm run dev` Start server on dev mode with nodemon
+* `gulp prod` Start server on live mode with PM2
+* `gulp` Start server on dev mode with nodemon
 * `npm run docs` Generate API documentation
 * `npm test` Run mocha tests
 
