@@ -43,6 +43,8 @@ git clone https://github.com/SystangoTechnologies/Koach.git
 * [Babel](https://github.com/babel/babel)
 * [ESLint](http://eslint.org/)
 * [Gulp](https://github.com/gulpjs/gulp/)
+* [PM2](https://github.com/Unitech/pm2/)
+* [Swagger](https://github.com/swagger-api/)
 
 ## Structure
 ```
