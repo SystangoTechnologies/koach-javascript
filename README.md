@@ -84,7 +84,7 @@ Visit [https://localhost:3000/docs/](https://localhost:3000/docs/) to view docs
 
 To view swagger API documentation
 
-Visit [https://localhost:3000/swagger/](https://localhost:3000/swagger/) to view Swagger UI.
+Visit [https://localhost:3000/swagger](https://localhost:3000/swagger) to view Swagger UI.
 
 ## Performance Comparison
 The environment for the test caes are following-
