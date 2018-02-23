@@ -1,14 +1,14 @@
-import User from '../../models/users'
+import User from '../../../models/users'
 
 /**
- * @api {post} /users Create a new user
+ * @api {post} /v1/users Create a new user
  * @apiPermission
  * @apiVersion 1.0.0
  * @apiName CreateUser
  * @apiGroup Users
  *
  * @apiExample Example usage:
- * curl -H "Content-Type: application/json" -X POST -d '{ "user": { "username": "johndoe", "password": "secretpasas" } }' localhost:5000/users
+ * curl -H "Content-Type: application/json" -X POST -d '{ "user": { "username": "johndoe", "password": "secretpasas" } }' localhost:3000/v1/users
  *
  * @apiParam {Object} user          User object (required)
  * @apiParam {String} user.username Username.
@@ -58,14 +58,14 @@ export async function createUser (ctx) {
 }
 
 /**
- * @api {get} /users Get all users
+ * @api {get} /v1/users Get all users
  * @apiPermission user
  * @apiVersion 1.0.0
  * @apiName GetUsers
  * @apiGroup Users
  *
  * @apiExample Example usage:
- * curl -H "Content-Type: application/json" -X GET localhost:5000/users
+ * curl -H "Content-Type: application/json" -X GET localhost:3000/v1/users
  *
  * @apiSuccess {Object[]} users           Array of user objects
  * @apiSuccess {ObjectId} users._id       User id
@@ -90,14 +90,14 @@ export async function getUsers (ctx) {
 }
 
 /**
- * @api {get} /users/:id Get user by id
+ * @api {get} /v1/users/:id Get user by id
  * @apiPermission user
  * @apiVersion 1.0.0
  * @apiName GetUser
  * @apiGroup Users
  *
  * @apiExample Example usage:
- * curl -H "Content-Type: application/json" -X GET localhost:5000/users/56bd1da600a526986cf65c80
+ * curl -H "Content-Type: application/json" -X GET localhost:3000/v1/users/56bd1da600a526986cf65c80
  *
  * @apiSuccess {Object}   users           User object
  * @apiSuccess {ObjectId} users._id       User id
@@ -138,14 +138,14 @@ export async function getUser (ctx, next) {
 }
 
 /**
- * @api {put} /users/:id Update a user
+ * @api {put} /v1/users/:id Update a user
  * @apiPermission
  * @apiVersion 1.0.0
  * @apiName UpdateUser
  * @apiGroup Users
  *
  * @apiExample Example usage:
- * curl -H "Content-Type: application/json" -X PUT -d '{ "user": { "name": "Cool new Name" } }' localhost:5000/users/56bd1da600a526986cf65c80
+ * curl -H "Content-Type: application/json" -X PUT -d '{ "user": { "name": "Cool new Name" } }' localhost:3000/v1/users/56bd1da600a526986cf65c80
  *
  * @apiParam {Object} user          User object (required)
  * @apiParam {String} user.name     Name.
@@ -190,14 +190,14 @@ export async function updateUser (ctx) {
 }
 
 /**
- * @api {delete} /users/:id Delete a user
+ * @api {delete} /v1/users/:id Delete a user
  * @apiPermission
  * @apiVersion 1.0.0
  * @apiName DeleteUser
  * @apiGroup Users
  *
  * @apiExample Example usage:
- * curl -H "Content-Type: application/json" -X DELETE localhost:5000/users/56bd1da600a526986cf65c80
+ * curl -H "Content-Type: application/json" -X DELETE localhost:3000/v1/users/56bd1da600a526986cf65c80
  *
  * @apiSuccess {StatusCode} 200
  *

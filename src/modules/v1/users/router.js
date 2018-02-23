@@ -1,4 +1,4 @@
-import { ensureUser } from '../../middleware/validators'
+import { ensureUser } from '../../../middleware/validators'
 import * as user from './controller'
 
 export const baseUrl = '/users'

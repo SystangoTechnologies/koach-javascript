@@ -11,13 +11,14 @@ This project covers basic necessities of most APIs.
 * http/2 support for websites and apis
 * Doc generation with apidoc
 * linting using standard
+* Contains two versions of API
 
 Please note, if you are planning to use this boilerplate for creating a web application then the 'https' protocol should be used to access its pages.
 
 Visit `https://localhost:3000/` to access the root page.
 
 ## Requirements
-* node > v7.8.0
+* node > v8.9.4
 * MongoDB
 
 ## Installation
@@ -62,9 +63,18 @@ git clone https://github.com/SystangoTechnologies/Koach.git
 │   ├── index.js             # Config entrypoint
 │   └── passport.js          # Passportjs config of strategies
 ├── src                      # Source code
-│   ├── modules
-│   │   ├── controller.js    # Module-specific controllers
-│   │   └── router.js        # Router definitions for module
+│   ├── modules              # Module-specific controllers
+│   │    ├── common          # Contains common modules
+│   │    │   ├─── home              
+│   │    │   └─ index.js
+│   │    ├── v1              # Version 1 of APIs
+│   │    │   ├─ Auth
+│   │    │   ├─ User   
+│   │    │   └─ index.js            
+│   │    └─── v2             # Version 2 of APIs
+│   │         ├─ Auth
+│   │         ├─ User   
+│   │         └─ index.js
 │   ├── models               # Mongoose models
 │   └── middleware           # Custom middleware
 │       └── validators       # Validation middleware
@@ -88,7 +98,7 @@ Visit [https://localhost:3000/swagger](https://localhost:3000/swagger) to view S
 
 ## Performance Comparison
 The environment for the test caes are following-
-* Node Version: **7.9.0**
+* Node Version: **8.9.4**
 * Number of Users: **1500**
 * Ramp-up Period: **300 seconds**
 * Loop Count: **100**
@@ -98,6 +108,7 @@ The environment for the test caes are following-
 
 ## Contributors
 [Arpit Khandelwal](https://github.com/arpit-systango)
+[Anurag Vikram Singh](https://github.com/avsingh-systango)
 
 ## License
 MIT.

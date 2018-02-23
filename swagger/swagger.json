@@ -12,12 +12,20 @@
     ],
     "tags": [
         {
-            "name": "Auth",
-            "description": "Authenticate user"
+            "name": "Auth [version 1]",
+            "description": "Authenticate user for version 1"
         },
         {
-            "name": "User",
-            "description": "User related api"
+            "name": "Auth [version 2]",
+            "description": "Authenticate user for version 2"
+        },
+        {
+            "name": "User [version 1]",
+            "description": "User related api for version 1"
+        },
+        {
+            "name": "User [version 2]",
+            "description": "User related api for version 2"
         }
     ],
     "securityDefinitions": {
@@ -29,10 +37,10 @@
         }
     },
     "paths": {
-        "/auth": {
+        "/v1/auth": {
             "post": {
                 "tags": [
-                    "Auth"
+                    "Auth [version 1]"
                 ],
                 "summary": "Authenticate user",
                 "description": "Authenticate user API",
@@ -96,10 +104,77 @@
                 }
             }
         },
-        "/users": {
+        "/v2/auth": {
             "post": {
                 "tags": [
-                    "Users"
+                    "Auth [version 2]"
+                ],
+                "summary": "Authenticate user",
+                "description": "Authenticate user API",
+                "operationId": "authUser",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "user",
+                        "description": "User's crecredentials",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "required": [
+                                "username",
+                                "password"
+                            ],
+                            "properties": {
+                                "username": {
+                                    "type": "string"
+                                },
+                                "password": {
+                                    "type": "string",
+                                    "format": "password"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Auth successful",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "user": {
+                                    "type": "object",
+                                    "properties": {
+                                        "username": {
+                                            "type": "string"
+                                        },
+                                        "_id": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "token": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/v1/users": {
+            "post": {
+                "tags": [
+                    "Users [version 1]"
                 ],
                 "summary": "Create user",
                 "description": "Create user API",
@@ -175,7 +250,7 @@
             },
             "get": {
                 "tags": [
-                    "Users"
+                    "Users [version 1]"
                 ],
                 "security": [
                     {
@@ -215,7 +290,7 @@
         "/users/{id}": {
             "get": {
                 "tags": [
-                    "Users"
+                    "Users [version 1]"
                 ],
                 "security": [
                     {
@@ -262,7 +337,7 @@
             },
             "put": {
                 "tags": [
-                    "Users"
+                    "Users [version 1]"
                 ],
                 "security": [
                     {
@@ -340,7 +415,7 @@
             },
             "delete": {
                 "tags": [
-                    "Users"
+                    "Users [version 1]"
                 ],
                 "security": [
                     {
@@ -376,6 +451,46 @@
                     },
                     "422": {
                         "description": "Unprocessable Entity"
+                    }
+                }
+            }
+        },
+        "/v2/users": {
+            "get": {
+                "tags": [
+                    "Users [version 2]"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "summary": "Get all users",
+                "description": "Get Users",
+                "operationId": "getUsers",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "_id": {
+                                    "type": "string"
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "username": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
                     }
                 }
             }

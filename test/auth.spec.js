@@ -19,10 +19,10 @@ describe('Auth', () => {
     })
   })
 
-  describe('POST /auth', () => {
+  describe('POST /v1/auth', () => {
     it('should throw 401 if credentials are incorrect', (done) => {
       request
-        .post('/auth')
+        .post('/v1/auth')
         .set('Accept', 'application/json')
         .send({ username: 'supercoolname', password: 'wrongpassword' })
         .expect(401, done)
@@ -30,7 +30,36 @@ describe('Auth', () => {
 
     it('should auth user', (done) => {
       request
-        .post('/auth')
+        .post('/v1/auth')
+        .set('Accept', 'application/json')
+        .send({ username: 'test', password: 'pass' })
+        .expect(200, (err, res) => {
+          if (err) { return done(err) }
+
+          res.body.user.should.have.property('username')
+          res.body.user.username.should.equal('test')
+          expect(res.body.user.password).to.not.exist
+
+          context.user = res.body.user
+          context.token = res.body.token
+
+          done()
+        })
+    })
+  })
+
+    describe('POST /v2/auth', () => {
+    it('should throw 401 if credentials are incorrect', (done) => {
+      request
+        .post('/v1/auth')
+        .set('Accept', 'application/json')
+        .send({ username: 'supercoolname', password: 'wrongpassword' })
+        .expect(401, done)
+    })
+
+    it('should auth user', (done) => {
+      request
+        .post('/v2/auth')
         .set('Accept', 'application/json')
         .send({ username: 'test', password: 'pass' })
         .expect(200, (err, res) => {

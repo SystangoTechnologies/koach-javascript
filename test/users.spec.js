@@ -13,10 +13,10 @@ describe('Users', () => {
     done()
   })
 
-  describe('POST /users', () => {
+  describe('POST /v1/users', () => {
     it('should reject signup when data is incomplete', (done) => {
       request
-        .post('/users')
+        .post('/v1/users')
         .set('Accept', 'application/json')
         .send({ username: 'supercoolname' })
         .expect(422, done)
@@ -24,7 +24,7 @@ describe('Users', () => {
 
     it('should sign up', (done) => {
       request
-        .post('/users')
+        .post('/v1/users')
         .set('Accept', 'application/json')
         .send({ user: { username: 'supercoolname', password: 'supersecretpassword' } })
         .expect(200, (err, res) => {
@@ -42,17 +42,17 @@ describe('Users', () => {
     })
   })
 
-  describe('GET /users', () => {
+  describe('GET /v1/users', () => {
     it('should not fetch users if the authorization header is missing', (done) => {
       request
-        .get('/users')
+        .get('/v1/users')
         .set('Accept', 'application/json')
         .expect(401, done)
     })
 
     it('should not fetch users if the authorization header is missing the scheme', (done) => {
       request
-        .get('/users')
+        .get('/v1/users')
         .set({
           Accept: 'application/json',
           Authorization: '1'
@@ -63,7 +63,7 @@ describe('Users', () => {
     it('should not fetch users if the authorization header has invalid scheme', (done) => {
       const { token } = context
       request
-        .get('/users')
+        .get('/v1/users')
         .set({
           Accept: 'application/json',
           Authorization: `Unknown ${token}`
@@ -73,7 +73,7 @@ describe('Users', () => {
 
     it('should not fetch users if token is invalid', (done) => {
       request
-        .get('/users')
+        .get('/v1/users')
         .set({
           Accept: 'application/json',
           Authorization: 'Bearer 1'
@@ -84,7 +84,7 @@ describe('Users', () => {
     it('should fetch all users', (done) => {
       const { token } = context
       request
-        .get('/users')
+        .get('/v1/users')
         .set({
           Accept: 'application/json',
           Authorization: `Bearer ${token}`
@@ -101,10 +101,69 @@ describe('Users', () => {
     })
   })
 
-  describe('GET /users/:id', () => {
+  describe('GET /v2/users', () => {
+    it('should not fetch users if the authorization header is missing for v2', (done) => {
+      request
+        .get('/v1/users')
+        .set('Accept', 'application/json')
+        .expect(401, done)
+    })
+
+    it('should not fetch users if the authorization header is missing the scheme for v2', (done) => {
+      request
+        .get('/v2/users')
+        .set({
+          Accept: 'application/json',
+          Authorization: '1'
+        })
+        .expect(401, done)
+    })
+
+    it('should not fetch users if the authorization header has invalid scheme for v2', (done) => {
+      const { token } = context
+      request
+        .get('/v2/users')
+        .set({
+          Accept: 'application/json',
+          Authorization: `Unknown ${token}`
+        })
+        .expect(401, done)
+    })
+
+    it('should not fetch users if token is invalid for v2', (done) => {
+      request
+        .get('/v2/users')
+        .set({
+          Accept: 'application/json',
+          Authorization: 'Bearer 1'
+        })
+        .expect(401, done)
+    })
+
+    it('should fetch all users', (done) => {
+      const { token } = context
+      request
+        .get('/v2/users')
+        .set({
+          Accept: 'application/json',
+          Authorization: `Bearer ${token}`
+        })
+        .expect(200, (err, res) => {
+          if (err) { return done(err) }
+
+          res.body.should.have.property('users')
+
+          res.body.users.should.have.length(1)
+
+          done()
+        })
+    })
+  })
+
+  describe('GET /v1/users/:id', () => {
     it('should not fetch user if token is invalid', (done) => {
       request
-        .get('/users/1')
+        .get('/v1/users/1')
         .set({
           Accept: 'application/json',
           Authorization: 'Bearer 1'
@@ -115,7 +174,7 @@ describe('Users', () => {
     it('should throw 404 if user doesn\'t exist', (done) => {
       const { token } = context
       request
-        .get('/users/1')
+        .get('/v1/users/1')
         .set({
           Accept: 'application/json',
           Authorization: `Bearer ${token}`
@@ -130,7 +189,7 @@ describe('Users', () => {
       } = context
 
       request
-        .get(`/users/${_id}`)
+        .get(`/v1/users/${_id}`)
         .set({
           Accept: 'application/json',
           Authorization: `Bearer ${token}`
@@ -150,7 +209,7 @@ describe('Users', () => {
   describe('PUT /users/:id', () => {
     it('should not update user if token is invalid', (done) => {
       request
-        .put('/users/1')
+        .put('/v1/users/1')
         .set({
           Accept: 'application/json',
           Authorization: 'Bearer 1'
@@ -161,7 +220,7 @@ describe('Users', () => {
     it('should throw 404 if user doesn\'t exist', (done) => {
       const { token } = context
       request
-        .put('/users/1')
+        .put('/v1/users/1')
         .set({
           Accept: 'application/json',
           Authorization: `Bearer ${token}`
@@ -176,7 +235,7 @@ describe('Users', () => {
       } = context
 
       request
-        .put(`/users/${_id}`)
+        .put(`/v1/users/${_id}`)
         .set({
           Accept: 'application/json',
           Authorization: `Bearer ${token}`
@@ -194,10 +253,10 @@ describe('Users', () => {
     })
   })
 
-  describe('DELETE /users/:id', () => {
+  describe('DELETE /v1/users/:id', () => {
     it('should not delete user if token is invalid', (done) => {
       request
-        .delete('/users/1')
+        .delete('/v1/users/1')
         .set({
           Accept: 'application/json',
           Authorization: 'Bearer 1'
@@ -208,7 +267,7 @@ describe('Users', () => {
     it('should throw 404 if user doesn\'t exist', (done) => {
       const { token } = context
       request
-        .delete('/users/1')
+        .delete('/v1/users/1')
         .set({
           Accept: 'application/json',
           Authorization: `Bearer ${token}`
@@ -223,7 +282,7 @@ describe('Users', () => {
       } = context
 
       request
-        .delete(`/users/${_id}`)
+        .delete(`/v1/users/${_id}`)
         .set({
           Accept: 'application/json',
           Authorization: `Bearer ${token}`

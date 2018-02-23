@@ -51,8 +51,12 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 // Using module wise routing
-const modules = require('../src/modules')
-modules(app)
+const modules1 = require('../src/modules/v1')
+const modules2 = require('../src/modules/v2')
+const common = require('../src/modules/common')
+modules1(app)
+modules2(app)
+common(app)
 
 // Show swagger only if the NODE_ENV is development
 if (!process.env.NODE_ENV || process.env.NODE_ENV === 'devlopment') {
@@ -61,7 +65,7 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV === 'devlopment') {
 
 // Using http2 to work with http/2 instead of http/1.x
 http2
-  .createServer(options, app.callback())
+  .createSecureServer(options, app.callback())
   .listen(config.port, () => {
     console.log(`Server started on ${config.port}`)
   })

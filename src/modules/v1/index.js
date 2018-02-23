@@ -10,7 +10,7 @@ exports = module.exports = function initModules (app) {
 
       const routes = router.default
       const baseUrl = router.baseUrl
-      const instance = new Router({ prefix: baseUrl })
+      const instance = new Router({ prefix: '/v1' + baseUrl })
 
       routes.forEach((config) => {
         const {
