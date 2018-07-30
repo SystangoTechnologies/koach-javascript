@@ -6,7 +6,6 @@ exports = module.exports = function initModules (app) {
     if (err) { throw err }
 
     matches.forEach((mod) => {
-      console.log(`${mod}/router`)
       const router = require(`${mod}/router`)
 
       const routes = router.default
