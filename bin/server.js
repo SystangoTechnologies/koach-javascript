@@ -23,7 +23,7 @@ const options = {
 }
 
 // --------------------- start -------------------------
-// Instead of calling convert for all legacy middlewares 
+// Instead of calling convert for all legacy middlewares
 // just use the following to convert them all at once
 
 const _use = app.use
@@ -34,7 +34,9 @@ app.use = x => _use.call(app, convert(x))
 // ---------------------- end --------------------------
 
 mongoose.Promise = global.Promise
-mongoose.connect(config.database)
+mongoose.connect(config.database, {
+  useNewUrlParser: true
+})
 
 app.use(helmet())
 app.use(logger())
@@ -65,7 +67,7 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV === 'devlopment') {
 
 // Using http2 to work with http/2 instead of http/1.x
 http2
-  .createSecureServer(options, app.callback())
+  .createServer(options, app.callback())
   .listen(config.port, () => {
     console.log(`Server started on ${config.port}`)
   })
