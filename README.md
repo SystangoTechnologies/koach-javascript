@@ -108,7 +108,7 @@ The environment for the test caes are following-
 
 ## Contributors
 [Arpit Khandelwal](https://github.com/arpit-systango)
-[Anurag Vikram Singh](https://github.com/avsingh-systango)
+[Anurag Vikram Singh](https://www.linkedin.com/in/anuragvikramsingh/)
 
 ## License
 MIT.
