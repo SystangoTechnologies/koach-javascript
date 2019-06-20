@@ -1,4 +1,5 @@
 import User from '../../../models/users'
+import constants from './../../../utils/constants'
 
 /**
  * @api {get} /v2//users Get all users
@@ -28,6 +29,12 @@ import User from '../../../models/users'
  * @apiUse TokenError
  */
 export async function getUsers (ctx) {
-  const users = await User.find({}, '-password')
-  ctx.body = { users }
+	try {
+		const users = await User.find({}, '-password -__v')
+		ctx.body = { users }
+		ctx.status = constants.STATUS_CODE.SUCCESS_STATUS;
+	} catch (error) {
+		ctx.body = error;
+		ctx.status = constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS
+	}
 }

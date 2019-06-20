@@ -1,5 +1,5 @@
 export default {
-  session: 'secret-boilerplate-token',
-  token: 'secret-jwt-token',
-  database: 'mongodb://localhost:27017/koach-dev'
+	session: process.env.SESSION,
+	token: process.env.JWT_SECRET,
+	database: process.env.DATABASE_URL
 }

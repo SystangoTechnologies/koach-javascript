@@ -54,6 +54,8 @@ sftp-config.json
 
 #Documentation
 docs
+.env
+.vscode
 
-# package-lock.json
-package-lock.json
+# Mac
+.DS_Store

@@ -1,0 +1,31 @@
+version: '2.1'
+services:
+  mongodb:
+    image: mongo:latest
+    restart: always
+    container_name: "mongodb"
+    environment:
+      - MONGO_DATA_DIR=/db/data
+      - MONGO_LOG_DIR=/dev/null
+    volumes:
+      - ${DB_PATH}:/data/db
+    ports:
+      - 27017:27017
+    command: mongod --bind_ip_all --smallfiles --logpath=/dev/null # --quiet
+        
+  web:
+    build: .
+    links:
+      - mongodb
+    container_name: koach
+    restart: always
+    ports:
+      - ${PORT}:${PORT}
+    environment:
+      - NODE_ENV=production
+      - PORT=${PORT}
+      - DATABASE_URL=${DATABASE_URL}
+      - JWT_SECRET=${JWT_SECRET}
+      - SESSION=${SESSION}
+    depends_on:
+      - mongodb

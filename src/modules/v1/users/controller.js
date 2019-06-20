@@ -1,5 +1,6 @@
 import User from '../../../models/users'
-
+import constants from './../../../utils/constants'
+import mongoose from 'mongoose'
 /**
  * @api {post} /v1/users Create a new user
  * @apiPermission
@@ -38,23 +39,31 @@ import User from '../../../models/users'
  *       "error": "Unprocessable Entity"
  *     }
  */
-export async function createUser (ctx) {
-  const user = new User(ctx.request.body.user)
-  try {
-    await user.save()
-  } catch (err) {
-    ctx.throw(422, err.message)
-  }
-
-  const token = user.generateToken()
-  const response = user.toJSON()
-
-  delete response.password
-
-  ctx.body = {
-    user: response,
-    token
-  }
+export async function createUser(ctx) {
+	const user = new User(ctx.request.body.user)
+	try {
+		let userData = await User.findOne({
+			username: ctx.request.body.username
+		});
+		if(userData) {
+			ctx.body = constants.MESSAGES.USER_ALREADY_EXIST;
+			ctx.status = constants.STATUS_CODE.CONFLICT_ERROR_STATUS
+			return;
+		}
+		await user.save()
+		const token = user.generateToken()
+		const response = user.toJSON()
+		delete response.password
+		ctx.body = {
+			user: response
+		}
+		ctx.append('Authorization', token);
+		ctx.status = constants.STATUS_CODE.CREATED_SUCCESSFULLY_STATUS;
+	} catch (error) {
+		console.log('Error while creating user', error);
+		ctx.body = error;
+		ctx.status = constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS
+	}
 }
 
 /**
@@ -84,9 +93,17 @@ export async function createUser (ctx) {
  *
  * @apiUse TokenError
  */
-export async function getUsers (ctx) {
-  const users = await User.find({}, '-password')
-  ctx.body = { users }
+export async function getUsers(ctx) {
+	try {
+		const users = await User.find({}, '-password -__v')
+		ctx.body = {
+			users
+		}
+		ctx.status = constants.STATUS_CODE.SUCCESS_STATUS;
+	} catch (error) {
+		ctx.body = error;
+		ctx.status = constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS
+	}
 }
 
 /**
@@ -116,25 +133,24 @@ export async function getUsers (ctx) {
  *
  * @apiUse TokenError
  */
-export async function getUser (ctx, next) {
-  try {
-    const user = await User.findById(ctx.params.id, '-password')
-    if (!user) {
-      ctx.throw(404)
-    }
-
-    ctx.body = {
-      user
-    }
-  } catch (err) {
-    if (err === 404 || err.name === 'CastError') {
-      ctx.throw(404)
-    }
-
-    ctx.throw(500)
-  }
-
-  if (next) { return next() }
+export async function getUser(ctx, next) {
+	try {
+		const user = await User.findById(ctx.params.id, '-password -__v')
+		if (!user) {
+			ctx.status = constants.STATUS_CODE.NO_CONTENT_STATUS
+			ctx.body = {
+				message: constants.MESSAGES.USER_NOT_FOUND
+			}
+			return
+		}
+		ctx.body = {
+			user
+		}
+		ctx.status = constants.STATUS_CODE.SUCCESS_STATUS;
+	} catch (error) {
+		ctx.body = error;
+		ctx.status = constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS
+	}
 }
 
 /**
@@ -157,14 +173,7 @@ export async function getUser (ctx, next) {
  * @apiSuccess {String}   users.username  Updated username
  *
  * @apiSuccessExample {json} Success-Response:
- *     HTTP/1.1 200 OK
- *     {
- *       "user": {
- *          "_id": "56bd1da600a526986cf65c80"
- *          "name": "Cool new name"
- *          "username": "johndoe"
- *       }
- *     }
+ *     HTTP/1.1 201 CREATED
  *
  * @apiError UnprocessableEntity Missing required parameters
  *
@@ -177,16 +186,22 @@ export async function getUser (ctx, next) {
  *
  * @apiUse TokenError
  */
-export async function updateUser (ctx) {
-  const user = ctx.body.user
-
-  Object.assign(user, ctx.request.body.user)
-
-  await user.save()
-
-  ctx.body = {
-    user
-  }
+export async function updateUser(ctx) {
+	try {
+		const user = ctx.request.body.user;
+		await User.findOneAndUpdate({
+			_id: mongoose.Types.ObjectId(ctx.params.id)
+		}, {
+			$set: {
+				name: user.name
+			}
+		})
+		ctx.status = constants.STATUS_CODE.CREATED_SUCCESSFULLY_STATUS;
+	} catch (error) {
+		console.log('Error', error)
+		ctx.body = error;
+		ctx.status = constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS
+	}
 }
 
 /**
@@ -210,13 +225,15 @@ export async function updateUser (ctx) {
  * @apiUse TokenError
  */
 
-export async function deleteUser (ctx) {
-  const user = ctx.body.user
-
-  await user.remove()
-
-  ctx.status = 200
-  ctx.body = {
-    success: true
-  }
+export async function deleteUser(ctx) {
+	try {
+		await User.findByIdAndRemove(mongoose.Types.ObjectId(ctx.params.id));
+		ctx.status = constants.STATUS_CODE.SUCCESS_STATUS;
+		ctx.body = {
+			success: true
+		}
+	} catch (error) {
+		ctx.body = error;
+		ctx.status = constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS
+	}
 }

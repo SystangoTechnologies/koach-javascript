@@ -1,4 +1,5 @@
 import passport from 'koa-passport'
+import constants from './../../../utils/constants'
 
 /**
  * @apiDefine TokenError
@@ -51,20 +52,26 @@ import passport from 'koa-passport'
  */
 
 export async function authUser (ctx, next) {
-  return passport.authenticate('local', (err, user) => {
-    if (err || !user) {
-      ctx.throw(401)
-    }
+	try {
+		return passport.authenticate('local', (err, user) => {
+			if (err || !user) {
+				ctx.throw(401)
+			}
 
-    const token = user.generateToken()
+			const token = user.generateToken()
 
-    const response = user.toJSON()
+			const response = user.toJSON()
 
-    delete response.password
-
-    ctx.body = {
-      token,
-      user: response
-    }
-  })(ctx, next)
+			delete response.password
+			delete response.__v
+			ctx.status = constants.STATUS_CODE.SUCCESS_STATUS
+			ctx.body = {
+				user: response
+			}
+			ctx.append('Authorization', token);
+		})(ctx, next)
+	} catch (error) {
+		ctx.body = error;
+		ctx.status = constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS
+	}
 }

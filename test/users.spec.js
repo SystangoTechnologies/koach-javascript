@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-expressions */
+/* eslint-disable no-undef */
 import app from '../bin/server'
 import supertest from 'supertest'
 import { expect, should } from 'chai'
@@ -7,287 +9,308 @@ should()
 const request = supertest.agent(app.listen())
 const context = {}
 
+// eslint-disable-next-line no-undef
 describe('Users', () => {
-  before((done) => {
-    cleanDb()
-    done()
-  })
+	before((done) => {
+		cleanDb()
+		done()
+	})
 
-  describe('POST /v1/users', () => {
-    it('should reject signup when data is incomplete', (done) => {
-      request
-        .post('/v1/users')
-        .set('Accept', 'application/json')
-        .send({ username: 'supercoolname' })
-        .expect(422, done)
-    })
+	describe('POST /v1/users', () => {
+		it('should reject signup when data is incomplete', (done) => {
+			request
+				.post('/v1/users')
+				.set('Accept', 'application/json')
+				.send({ username: 'supercoolname' })
+				.expect(500, done)
+		})
 
-    it('should sign up', (done) => {
-      request
-        .post('/v1/users')
-        .set('Accept', 'application/json')
-        .send({ user: { username: 'supercoolname', password: 'supersecretpassword' } })
-        .expect(200, (err, res) => {
-          if (err) { return done(err) }
+		it('should sign up', (done) => {
+			request
+				.post('/v1/users')
+				.set('Accept', 'application/json')
+				.send({ user: { username: 'supercoolname', name: 'test', password: 'supersecretpassword' } })
+				.expect(201, (err, res) => {
+					if (err) { return done(err) }
 
-          res.body.user.should.have.property('username')
-          res.body.user.username.should.equal('supercoolname')
-          expect(res.body.user.password).to.not.exist
+					res.body.user.should.have.property('username')
+					res.body.user.username.should.equal('supercoolname')
+					expect(res.body.user.password).to.not.exist
 
-          context.user = res.body.user
-          context.token = res.body.token
+					context.user = res.body.user
+					context.token = res.headers.authorization
 
-          done()
-        })
-    })
-  })
+					done()
+				})
+		})
+	})
 
-  describe('GET /v1/users', () => {
-    it('should not fetch users if the authorization header is missing', (done) => {
-      request
-        .get('/v1/users')
-        .set('Accept', 'application/json')
-        .expect(401, done)
-    })
+	describe('POST /v1/auth', () => {
+		it('should throw 401 if credentials are incorrect', (done) => {
+			request
+				.post('/v1/auth')
+				.set('Accept', 'application/json')
+				.send({ username: 'supercoolname', password: 'wrongpassword' })
+				.expect(401, done)
+		})
 
-    it('should not fetch users if the authorization header is missing the scheme', (done) => {
-      request
-        .get('/v1/users')
-        .set({
-          Accept: 'application/json',
-          Authorization: '1'
-        })
-        .expect(401, done)
-    })
+		it('should auth user', (done) => {
+			request
+				.post('/v1/auth')
+				.set('Accept', 'application/json')
+				.send({ username: 'supercoolname', password: 'supersecretpassword' })
+				.expect(200, (err, res) => {
+					if (err) { return done(err) }
 
-    it('should not fetch users if the authorization header has invalid scheme', (done) => {
-      const { token } = context
-      request
-        .get('/v1/users')
-        .set({
-          Accept: 'application/json',
-          Authorization: `Unknown ${token}`
-        })
-        .expect(401, done)
-    })
+					res.body.user.should.have.property('username')
+					res.body.user.username.should.equal('supercoolname')
+					expect(res.body.user.password).to.not.exist
 
-    it('should not fetch users if token is invalid', (done) => {
-      request
-        .get('/v1/users')
-        .set({
-          Accept: 'application/json',
-          Authorization: 'Bearer 1'
-        })
-        .expect(401, done)
-    })
+					context.user = res.body.user
+					context.token = res.headers.authorization
 
-    it('should fetch all users', (done) => {
-      const { token } = context
-      request
-        .get('/v1/users')
-        .set({
-          Accept: 'application/json',
-          Authorization: `Bearer ${token}`
-        })
-        .expect(200, (err, res) => {
-          if (err) { return done(err) }
+					done()
+				})
+		})
+	})
 
-          res.body.should.have.property('users')
+	describe('GET /v1/users', () => {
+		it('should not fetch users if the authorization header is missing', (done) => {
+			request
+				.get('/v1/users')
+				.set('Accept', 'application/json')
+				.expect(401, done)
+		})
 
-          res.body.users.should.have.length(1)
+		it('should not fetch users if the authorization header is missing the scheme', (done) => {
+			request
+				.get('/v1/users')
+				.set({
+					Accept: 'application/json',
+					Authorization: '1'
+				})
+				.expect(401, done)
+		})
 
-          done()
-        })
-    })
-  })
+		it('should not fetch users if the authorization header has invalid scheme', (done) => {
+			const { token } = context
+			request
+				.get('/v1/users')
+				.set({
+					Accept: 'application/json',
+					Authorization: `Unknown ${token}`
+				})
+				.expect(401, done)
+		})
 
-  describe('GET /v2/users', () => {
-    it('should not fetch users if the authorization header is missing for v2', (done) => {
-      request
-        .get('/v1/users')
-        .set('Accept', 'application/json')
-        .expect(401, done)
-    })
+		it('should not fetch users if token is invalid', (done) => {
+			request
+				.get('/v1/users')
+				.set({
+					Accept: 'application/json',
+					Authorization: 'Bearer 1'
+				})
+				.expect(401, done)
+		})
 
-    it('should not fetch users if the authorization header is missing the scheme for v2', (done) => {
-      request
-        .get('/v2/users')
-        .set({
-          Accept: 'application/json',
-          Authorization: '1'
-        })
-        .expect(401, done)
-    })
+		it('should fetch all users', (done) => {
+			const { token } = context
+			request
+				.get('/v1/users')
+				.set({
+					Accept: 'application/json',
+					Authorization: `Bearer ${token}`
+				})
+				.expect(200, (err, res) => {
+					if (err) { return done(err) }
 
-    it('should not fetch users if the authorization header has invalid scheme for v2', (done) => {
-      const { token } = context
-      request
-        .get('/v2/users')
-        .set({
-          Accept: 'application/json',
-          Authorization: `Unknown ${token}`
-        })
-        .expect(401, done)
-    })
+					res.body.should.have.property('users')
 
-    it('should not fetch users if token is invalid for v2', (done) => {
-      request
-        .get('/v2/users')
-        .set({
-          Accept: 'application/json',
-          Authorization: 'Bearer 1'
-        })
-        .expect(401, done)
-    })
+					res.body.users.should.have.length(1)
 
-    it('should fetch all users', (done) => {
-      const { token } = context
-      request
-        .get('/v2/users')
-        .set({
-          Accept: 'application/json',
-          Authorization: `Bearer ${token}`
-        })
-        .expect(200, (err, res) => {
-          if (err) { return done(err) }
+					done()
+				})
+		})
+	})
 
-          res.body.should.have.property('users')
+	describe('POST /v2/auth', () => {
+		it('should throw 401 if credentials are incorrect', (done) => {
+			request
+				.post('/v1/auth')
+				.set('Accept', 'application/json')
+				.send({ username: 'supercoolname', password: 'wrongpassword' })
+				.expect(401, done)
+		})
 
-          res.body.users.should.have.length(1)
+		it('should auth user', (done) => {
+			request
+				.post('/v2/auth')
+				.set('Accept', 'application/json')
+				.send({ username: 'supercoolname', password: 'supersecretpassword' })
+				.expect(200, (err, res) => {
+					if (err) { return done(err) }
 
-          done()
-        })
-    })
-  })
+					res.body.user.should.have.property('username')
+					res.body.user.username.should.equal('supercoolname')
+					expect(res.body.user.password).to.not.exist
 
-  describe('GET /v1/users/:id', () => {
-    it('should not fetch user if token is invalid', (done) => {
-      request
-        .get('/v1/users/1')
-        .set({
-          Accept: 'application/json',
-          Authorization: 'Bearer 1'
-        })
-        .expect(401, done)
-    })
+					context.user = res.body.user
+					context.token = res.headers.authorization
 
-    it('should throw 404 if user doesn\'t exist', (done) => {
-      const { token } = context
-      request
-        .get('/v1/users/1')
-        .set({
-          Accept: 'application/json',
-          Authorization: `Bearer ${token}`
-        })
-        .expect(404, done)
-    })
+					done()
+				})
+		})
+	})
 
-    it('should fetch user', (done) => {
-      const {
-        user: { _id },
-        token
-      } = context
+	describe('GET /v2/users', () => {
+		it('should not fetch users if the authorization header is missing for v2', (done) => {
+			request
+				.get('/v1/users')
+				.set('Accept', 'application/json')
+				.expect(401, done)
+		})
 
-      request
-        .get(`/v1/users/${_id}`)
-        .set({
-          Accept: 'application/json',
-          Authorization: `Bearer ${token}`
-        })
-        .expect(200, (err, res) => {
-          if (err) { return done(err) }
+		it('should not fetch users if the authorization header is missing the scheme for v2', (done) => {
+			request
+				.get('/v2/users')
+				.set({
+					Accept: 'application/json',
+					Authorization: '1'
+				})
+				.expect(401, done)
+		})
 
-          res.body.should.have.property('user')
+		it('should not fetch users if the authorization header has invalid scheme for v2', (done) => {
+			const { token } = context
+			request
+				.get('/v2/users')
+				.set({
+					Accept: 'application/json',
+					Authorization: `Unknown ${token}`
+				})
+				.expect(401, done)
+		})
 
-          expect(res.body.user.password).to.not.exist
+		it('should not fetch users if token is invalid for v2', (done) => {
+			request
+				.get('/v2/users')
+				.set({
+					Accept: 'application/json',
+					Authorization: 'Bearer 1'
+				})
+				.expect(401, done)
+		})
 
-          done()
-        })
-    })
-  })
+		it('should fetch all users', (done) => {
+			const { token } = context
+			request
+				.get('/v2/users')
+				.set({
+					Accept: 'application/json',
+					Authorization: `Bearer ${token}`
+				})
+				.expect(200, (err, res) => {
+					if (err) { return done(err) }
 
-  describe('PUT /users/:id', () => {
-    it('should not update user if token is invalid', (done) => {
-      request
-        .put('/v1/users/1')
-        .set({
-          Accept: 'application/json',
-          Authorization: 'Bearer 1'
-        })
-        .expect(401, done)
-    })
+					res.body.should.have.property('users')
 
-    it('should throw 404 if user doesn\'t exist', (done) => {
-      const { token } = context
-      request
-        .put('/v1/users/1')
-        .set({
-          Accept: 'application/json',
-          Authorization: `Bearer ${token}`
-        })
-        .expect(404, done)
-    })
+					res.body.users.should.have.length(1)
 
-    it('should update user', (done) => {
-      const {
-        user: { _id },
-        token
-      } = context
+					done()
+				})
+		})
+	})
 
-      request
-        .put(`/v1/users/${_id}`)
-        .set({
-          Accept: 'application/json',
-          Authorization: `Bearer ${token}`
-        })
-        .send({ user: { username: 'updatedcoolname' } })
-        .expect(200, (err, res) => {
-          if (err) { return done(err) }
+	describe('GET /v1/users/:id', () => {
+		it('should not fetch user if token is invalid', (done) => {
+			request
+				.get('/v1/users/1')
+				.set({
+					Accept: 'application/json',
+					Authorization: 'Bearer 1'
+				})
+				.expect(401, done)
+		})
 
-          res.body.user.should.have.property('username')
-          res.body.user.username.should.equal('updatedcoolname')
-          expect(res.body.user.password).to.not.exist
+		it('should fetch user', (done) => {
+			const {
+				user: { _id },
+				token
+			} = context
 
-          done()
-        })
-    })
-  })
+			request
+				.get(`/v1/users/${_id}`)
+				.set({
+					Accept: 'application/json',
+					Authorization: `Bearer ${token}`
+				})
+				.expect(200, (err, res) => {
+					if (err) { return done(err) }
 
-  describe('DELETE /v1/users/:id', () => {
-    it('should not delete user if token is invalid', (done) => {
-      request
-        .delete('/v1/users/1')
-        .set({
-          Accept: 'application/json',
-          Authorization: 'Bearer 1'
-        })
-        .expect(401, done)
-    })
+					res.body.should.have.property('user')
 
-    it('should throw 404 if user doesn\'t exist', (done) => {
-      const { token } = context
-      request
-        .delete('/v1/users/1')
-        .set({
-          Accept: 'application/json',
-          Authorization: `Bearer ${token}`
-        })
-        .expect(404, done)
-    })
+					expect(res.body.user.password).to.not.exist
 
-    it('should delete user', (done) => {
-      const {
-        user: { _id },
-        token
-      } = context
+					done()
+				})
+		})
+	})
 
-      request
-        .delete(`/v1/users/${_id}`)
-        .set({
-          Accept: 'application/json',
-          Authorization: `Bearer ${token}`
-        })
-        .expect(200, done)
-    })
-  })
+	describe('PUT /users/:id', () => {
+		it('should not update user if token is invalid', (done) => {
+			request
+				.put('/v1/users/1')
+				.set({
+					Accept: 'application/json',
+					Authorization: 'Bearer 1'
+				})
+				.expect(401, done)
+		})
+
+		it('should update user', (done) => {
+			const {
+				user: { _id },
+				token
+			} = context
+
+			request
+				.put(`/v1/users/${_id}`)
+				.set({
+					Accept: 'application/json',
+					Authorization: `Bearer ${token}`
+				})
+				.send({ user: { username: 'updatedcoolname' } })
+				.expect(201, (err, res) => {
+					if (err) { return done(err) }
+					done()
+				})
+		})
+	})
+
+	describe('DELETE /v1/users/:id', () => {
+		it('should not delete user if token is invalid', (done) => {
+			request
+				.delete('/v1/users/1')
+				.set({
+					Accept: 'application/json',
+					Authorization: 'Bearer 1'
+				})
+				.expect(401, done)
+		})
+
+		it('should delete user', (done) => {
+			const {
+				user: { _id },
+				token
+			} = context
+
+			request
+				.delete(`/v1/users/${_id}`)
+				.set({
+					Accept: 'application/json',
+					Authorization: `Bearer ${token}`
+				})
+				.expect(200, done)
+		})
+	})
 })

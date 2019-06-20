@@ -2,35 +2,35 @@ import glob from 'glob'
 import Router from 'koa-router'
 
 exports = module.exports = function initModules (app) {
-  glob(`${__dirname}/*`, { ignore: '**/index.js' }, (err, matches) => {
-    if (err) { throw err }
+	glob(`${__dirname}/*`, { ignore: '**/index.js' }, (err, matches) => {
+		if (err) { throw err }
 
-    matches.forEach((mod) => {
-      console.log(`${mod}/router`)
-      const router = require(`${mod}/router`)
+		matches.forEach((mod) => {
+			console.log(`${mod}/router`)
+			const router = require(`${mod}/router`)
 
-      const routes = router.default
-      const baseUrl = router.baseUrl
-      const instance = new Router({ prefix: baseUrl })
+			const routes = router.default
+			const baseUrl = router.baseUrl
+			const instance = new Router({ prefix: baseUrl })
 
-      routes.forEach((config) => {
-        const {
+			routes.forEach((config) => {
+				const {
 
-          method = '',
-          route = '',
-          handlers = []
-        } = config
+					method = '',
+					route = '',
+					handlers = []
+				} = config
 
-        const lastHandler = handlers.pop()
+				const lastHandler = handlers.pop()
 
-        instance[method.toLowerCase()](route, ...handlers, async function (ctx) {
-          await lastHandler(ctx)
-        })
+				instance[method.toLowerCase()](route, ...handlers, async function (ctx) {
+					await lastHandler(ctx)
+				})
 
-        app
-          .use(instance.routes())
-          .use(instance.allowedMethods())
-      })
-    })
-  })
+				app
+					.use(instance.routes())
+					.use(instance.allowedMethods())
+			})
+		})
+	})
 }
