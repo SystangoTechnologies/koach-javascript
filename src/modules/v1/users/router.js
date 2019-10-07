@@ -42,5 +42,13 @@ export default [
 			ensureUser,
 			user.deleteUser
 		]
+	},
+	{
+		method: 'PATCH',
+		route: '/_change-password',
+		handlers: [
+			ensureUser,
+			user.changePassword
+		]
 	}
 ]

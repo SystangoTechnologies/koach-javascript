@@ -237,3 +237,61 @@ export async function deleteUser(ctx) {
 		ctx.status = constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS
 	}
 }
+
+/**
+ * @api {patch} /v1/users/_change-password Upadete password of a user
+ * @apiPermission
+ * @apiVersion 1.0.0
+ * @apiName changePassword
+ * @apiGroup Users
+ *
+ * @apiExample Example usage:
+ * curl -H "Content-Type: application/json" -X PATCH -d '{ "oldPassword":"oldPassword", "newPassword": "newPassword" }' localhost:3000/v1/users/_changePassword
+ *
+ * @apiSuccess {StatusCode} 200
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "success": true
+ *     }
+ *
+ * @apiUse TokenError
+ */
+
+export async function changePassword(ctx) {
+	try {
+		let oldPassword = ctx.request.body.oldPassword
+		let newPassword = ctx.request.body.newPassword
+
+		if(!newPassword || !oldPassword) {
+			ctx.status = constants.STATUS_CODE.BAD_REQUEST_ERROR_STATUS
+			return
+		}
+
+		let user = await User.findOne({
+			_id: mongoose.Types.ObjectId(ctx.state.user.id)
+		})
+
+		let isMatch = await user.validatePassword(oldPassword)
+
+		if(isMatch) {
+			user.password = newPassword
+			user.save();
+			ctx.status = constants.STATUS_CODE.SUCCESS_STATUS;
+			ctx.body = {
+				success: true
+			}
+			return
+		} else {
+			ctx.body = {
+				success: false
+			}
+			ctx.status = constants.STATUS_CODE.UNAUTHORIZED_ERROR_STATUS
+			return
+		}
+	} catch (error) {
+		ctx.body = error;
+		ctx.status = constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS
+	}
+}

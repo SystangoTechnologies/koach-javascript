@@ -76,15 +76,15 @@ git clone https://github.com/SystangoTechnologies/Koach.git
 ├── src                      # Source code
 │   ├── modules              # Module-specific controllers
 │   │    ├── common          # Contains common modules
-│   │    │   ├─── home              
+│   │    │   ├─── home
 │   │    │   └─ index.js
 │   │    ├── v1              # Version 1 of APIs
 │   │    │   ├─ Auth
-│   │    │   ├─ User   
-│   │    │   └─ index.js            
+│   │    │   ├─ User
+│   │    │   └─ index.js
 │   │    └─── v2             # Version 2 of APIs
 │   │         ├─ Auth
-│   │         ├─ User   
+│   │         ├─ User
 │   │         └─ index.js
 │   ├── models               # Mongoose models
 │   └── middleware           # Custom middleware
@@ -109,7 +109,7 @@ Prerequisite For Docker Configuration : Docker and docker compose must be instal
 Steps to run app in docker container :
   1. CD to project dir
   2. Create build using cmd: $ docker-compose build
-  3. Start the server in daemon thread using cmd: $ docker-compose up -d 
+  3. Start the server in daemon thread using cmd: $ docker-compose up -d
   4. Stop the server using cmd : $ docker-compose down
 
 ## Documentation
@@ -135,6 +135,7 @@ The environment for the test cases are following-
 [Arpit Khandelwal](https://github.com/arpit-systango)
 [Anurag Vikram Singh](https://www.linkedin.com/in/anuragvikramsingh/)
 [Vikas Patidar](https://www.linkedin.com/in/vikas-patidar-0106/)
+[Sparsh Pipley](https://www.linkedin.com/in/sparsh-pipley-6ab0b1a4/)
 
 ## License
 MIT.
