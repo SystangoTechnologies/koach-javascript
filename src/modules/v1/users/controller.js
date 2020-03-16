@@ -40,7 +40,7 @@ import mongoose from 'mongoose'
  *     }
  */
 export async function createUser(ctx) {
-	const user = new User(ctx.request.body.user)
+	const user = new User(ctx.request.body)
 	try {
 		let userData = await User.findOne({
 			username: ctx.request.body.username
@@ -96,9 +96,7 @@ export async function createUser(ctx) {
 export async function getUsers(ctx) {
 	try {
 		const users = await User.find({}, '-password -__v')
-		ctx.body = {
-			users
-		}
+		ctx.body = users;
 		ctx.status = constants.STATUS_CODE.SUCCESS_STATUS;
 	} catch (error) {
 		ctx.body = error;
@@ -143,9 +141,7 @@ export async function getUser(ctx, next) {
 			}
 			return
 		}
-		ctx.body = {
-			user
-		}
+		ctx.body = user
 		ctx.status = constants.STATUS_CODE.SUCCESS_STATUS;
 	} catch (error) {
 		ctx.body = error;
@@ -188,7 +184,7 @@ export async function getUser(ctx, next) {
  */
 export async function updateUser(ctx) {
 	try {
-		const user = ctx.request.body.user;
+		const user = ctx.request.body;
 		await User.findOneAndUpdate({
 			_id: mongoose.Types.ObjectId(ctx.params.id)
 		}, {
@@ -222,6 +218,14 @@ export async function updateUser(ctx) {
  *       "success": true
  *     }
  *
+ * @apiError UnprocessableEntity Missing required parameters
+ *
+ * @apiErrorExample {json} Error-Response:
+ *     HTTP/1.1 400 Bad request
+ *     {
+ *       "status": 400,
+ *       "error": "Bad request"
+ *     }
  * @apiUse TokenError
  */
 

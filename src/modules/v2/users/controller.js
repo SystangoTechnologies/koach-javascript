@@ -31,7 +31,7 @@ import constants from './../../../utils/constants'
 export async function getUsers (ctx) {
 	try {
 		const users = await User.find({}, '-password -__v')
-		ctx.body = { users }
+		ctx.body = users
 		ctx.status = constants.STATUS_CODE.SUCCESS_STATUS;
 	} catch (error) {
 		ctx.body = error;

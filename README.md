@@ -56,7 +56,7 @@ git clone https://github.com/SystangoTechnologies/Koach.git
 * [Babel](https://github.com/babel/babel)
 * [ESLint](http://eslint.org/)
 * [PM2](https://github.com/Unitech/pm2/)
-* [Swagger](https://github.com/swagger-api/)
+* [Swagger](https://github.com/SystangoTechnologies/swagger-generator-koa/blob/master/README.md)
 
 ## Structure
 ```
@@ -76,17 +76,31 @@ git clone https://github.com/SystangoTechnologies/Koach.git
 ├── src                      # Source code
 │   ├── modules              # Module-specific controllers
 │   │    ├── common          # Contains common modules
-│   │    │   ├─── home
+│   │    │   ├─── home              
 │   │    │   └─ index.js
 │   │    ├── v1              # Version 1 of APIs
 │   │    │   ├─ Auth
-│   │    │   ├─ User
-│   │    │   └─ index.js
+│   │    │   ├─ User   
+│   │    │   └─ index.js            
 │   │    └─── v2             # Version 2 of APIs
 │   │         ├─ Auth
-│   │         ├─ User
+│   │         ├─ User   
 │   │         └─ index.js
 │   ├── models               # Mongoose models
+|   ├── requestModel
+|   |    ├── v1
+|   |    |  ├── auth.js
+|   |    |  └── users.js
+|   |    └── v2
+|   |       ├── auth.js
+|   |       └── users.js
+|   ├── responseModel
+|   |    ├── v1
+|   |    |  ├── auth.js
+|   |    |  └── users.js
+|   |    └── v2
+|   |       ├── auth.js
+|   |       └── users.js
 │   └── middleware           # Custom middleware
 │       └── validators       # Validation middleware
 └── test                     # Unit tests
@@ -109,7 +123,7 @@ Prerequisite For Docker Configuration : Docker and docker compose must be instal
 Steps to run app in docker container :
   1. CD to project dir
   2. Create build using cmd: $ docker-compose build
-  3. Start the server in daemon thread using cmd: $ docker-compose up -d
+  3. Start the server in daemon thread using cmd: $ docker-compose up -d 
   4. Stop the server using cmd : $ docker-compose down
 
 ## Documentation

@@ -1,7 +1,5 @@
 import * as home from './controller'
 
-export const baseUrl = '/'
-
 export default [
 	{
 		method: 'GET',
