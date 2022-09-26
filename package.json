@@ -58,7 +58,7 @@
     "koa-static": "^5.0.0",
     "mongoose": "^5.9.3",
     "passport-local": "^1.0.0",
-    "pm2": "^4.2.3",
+    "pm2": "^5.2.0",
     "require-dir": "^1.2.0",
     "swagger-generator-koa": "^2.0.0"
   },
